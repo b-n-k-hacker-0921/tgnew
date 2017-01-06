@@ -765,10 +765,13 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
           tg.deleteMessages(msg.chat_id_, {[0] = msg.reply_to_message_id_})
       end
 	  
-	  if input:match('^[#!/]tosuper') then
-			local gpid = msg.chat_id_
-             tdcli.migrateGroupChatToChannelChat(gpid)
-	  end
+      if input:match("^[#!/][Tt]osuper") and is_sudo(msg) and groups then
+          tdcli.migrateGroupChatToChannelChat(msg.chat_id_)
+      end
+    
+      if input:match("^[#!/][Ll]ocation") and is_sudo(msg) then
+        tdcli.send_location(chat_id, string.sub(input, 10), string.sub(input, 1 + (string.len(","))))
+      end
 
       if input:match("^[#!/]view") then
         tdcli.viewMessages(chat_id, {[0] = msg.id_})
